@@ -10,4 +10,11 @@ typedef struct mat4_t {
     };
 } mat4_t;
 
+#define mat4_identity(x)((mat4_t){\
+x, 0, 0, 0,\
+0, x, 0, 0,\
+0, 0, x, 0,\
+0, 0, 0, x,\
+})
+
 #endif

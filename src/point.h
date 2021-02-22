@@ -5,7 +5,7 @@
 
 typedef struct point_t {
 	int x, y, z;
-	int u, v;
+	float u, v;
 	colour_t c;
 } point_t;
 

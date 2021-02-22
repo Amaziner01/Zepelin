@@ -49,6 +49,10 @@ int main(void) {
 
 	float deg = 0.0;
 
+
+	texture_t *tex = load_texture("lowbrick.bin");
+
+
 	clock_t last, act;
 	last = clock();
 	float dt;
@@ -70,6 +74,14 @@ int main(void) {
 
 		clear_colour(colour(40, 180, 255));
 
+		
+		colour_t *tc = (colour_t*)tex->pixels;
+		for (int j = 0; j < 10; ++j) {
+			for (int i = 0; i < 10; ++i) {
+				plot_pixel(i, j, tc[i + (j * tex->w)]);
+			}
+		}
+
 		for (int i = 0; i < 3; ++i) {
 			transformed[i] = vec4_add(vec4_mul_mat4(vec4_mul(v[i],scl),rot),pos);
 		}
@@ -77,16 +89,22 @@ int main(void) {
 			transformed2[i] = vec4_add(vec4_mul_mat4(vec4_mul(v2[i],scl),rot),pos);
 		}
 
-		plot_triangle(
-			transformed[0].x, transformed[0].y, colour(255, 0, 0),
-			transformed[1].x, transformed[1].y, colour(0, 255, 0),
-			transformed[2].x, transformed[2].y, colour(0, 0, 255)
+		plot_triangle_texture(
+			transformed[0].x, transformed[0].y, 1.0, 1.0,
+			transformed[1].x, transformed[1].y, 1.0, 0.0,
+			transformed[2].x, transformed[2].y, 0.0, 0.0,
+			tex
 		);
-		plot_triangle(
-			transformed2[0].x, transformed2[0].y, colour(0, 0, 255),
-			transformed2[1].x, transformed2[1].y, colour(255, 255, 0),
-			transformed2[2].x, transformed2[2].y, colour(255, 0, 0)
+
+		
+		plot_triangle_texture(
+			transformed2[0].x, transformed2[0].y, 0.0, 0.0,
+			transformed2[1].x, transformed2[1].y, 0.0, 1.0,
+			transformed2[2].x, transformed2[2].y, 1.0, 1.0,
+			tex
 		);
+		
+		
 
 		refresh();
 
@@ -104,6 +122,7 @@ int main(void) {
 		last = act;
 	}
 
+	free_texture(tex);
 	terminate_surface(sf);
 	window_terminate();
 	free(pixels);

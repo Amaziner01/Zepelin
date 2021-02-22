@@ -249,6 +249,33 @@ src/surface.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ZepelinGraphics.dir\build.make CMakeFiles/ZepelinGraphics.dir/src/surface.c.s
 .PHONY : src/surface.c.s
 
+src/texture.obj: src/texture.c.obj
+
+.PHONY : src/texture.obj
+
+# target to build an object file
+src/texture.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ZepelinGraphics.dir\build.make CMakeFiles/ZepelinGraphics.dir/src/texture.c.obj
+.PHONY : src/texture.c.obj
+
+src/texture.i: src/texture.c.i
+
+.PHONY : src/texture.i
+
+# target to preprocess a source file
+src/texture.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ZepelinGraphics.dir\build.make CMakeFiles/ZepelinGraphics.dir/src/texture.c.i
+.PHONY : src/texture.c.i
+
+src/texture.s: src/texture.c.s
+
+.PHONY : src/texture.s
+
+# target to generate assembly for a file
+src/texture.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ZepelinGraphics.dir\build.make CMakeFiles/ZepelinGraphics.dir/src/texture.c.s
+.PHONY : src/texture.c.s
+
 src/vec4.obj: src/vec4.c.obj
 
 .PHONY : src/vec4.obj
@@ -324,6 +351,9 @@ help:
 	@echo ... src/surface.obj
 	@echo ... src/surface.i
 	@echo ... src/surface.s
+	@echo ... src/texture.obj
+	@echo ... src/texture.i
+	@echo ... src/texture.s
 	@echo ... src/vec4.obj
 	@echo ... src/vec4.i
 	@echo ... src/vec4.s
