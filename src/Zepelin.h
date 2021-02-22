@@ -6,6 +6,8 @@
 #include "surface.h"
 #include "statemachine.h"
 
+#include "input.h"
+
 #include "colour.h"
 #include "texture.h"
 

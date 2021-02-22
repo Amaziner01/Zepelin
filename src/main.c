@@ -52,6 +52,7 @@ int main(void) {
 
 	texture_t *tex = load_texture("lowbrick.bin");
 
+	// TODO: KNN
 
 	clock_t last, act;
 	last = clock();
@@ -59,10 +60,12 @@ int main(void) {
 	while (is_window_running()) {
 		deg += 0.5 * dt;
 
-		GetKeyboardState(keys);
+		get_keyboard_state();
 
-		if (keys[0x44] & 0x80) pos.x += 100 * dt;
-		if (keys[0x41] & 0x80) pos.x -= 100 * dt;
+		if (is_key_pressed(key_d)) pos.x += 100 * dt;
+		if (is_key_pressed(key_a)) pos.x -= 100 * dt;
+		if (is_key_pressed(key_w)) pos.y -= 100 * dt;
+		if (is_key_pressed(key_s)) pos.y += 100 * dt;
 
 		mat4_t rot = {
 			sin(-deg), cos(-deg), 0.0, 0.0,
@@ -76,8 +79,8 @@ int main(void) {
 
 		
 		colour_t *tc = (colour_t*)tex->pixels;
-		for (int j = 0; j < 10; ++j) {
-			for (int i = 0; i < 10; ++i) {
+		for (int j = 0; j < tex->h; ++j) {
+			for (int i = 0; i < tex->w; ++i) {
 				plot_pixel(i, j, tc[i + (j * tex->w)]);
 			}
 		}

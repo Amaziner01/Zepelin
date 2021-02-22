@@ -168,6 +168,33 @@ src/Zepelin.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles\ZepelinGraphics.dir\build.make CMakeFiles/ZepelinGraphics.dir/src/Zepelin.c.s
 .PHONY : src/Zepelin.c.s
 
+src/input.obj: src/input.c.obj
+
+.PHONY : src/input.obj
+
+# target to build an object file
+src/input.c.obj:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ZepelinGraphics.dir\build.make CMakeFiles/ZepelinGraphics.dir/src/input.c.obj
+.PHONY : src/input.c.obj
+
+src/input.i: src/input.c.i
+
+.PHONY : src/input.i
+
+# target to preprocess a source file
+src/input.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ZepelinGraphics.dir\build.make CMakeFiles/ZepelinGraphics.dir/src/input.c.i
+.PHONY : src/input.c.i
+
+src/input.s: src/input.c.s
+
+.PHONY : src/input.s
+
+# target to generate assembly for a file
+src/input.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles\ZepelinGraphics.dir\build.make CMakeFiles/ZepelinGraphics.dir/src/input.c.s
+.PHONY : src/input.c.s
+
 src/main.obj: src/main.c.obj
 
 .PHONY : src/main.obj
@@ -342,6 +369,9 @@ help:
 	@echo ... src/Zepelin.obj
 	@echo ... src/Zepelin.i
 	@echo ... src/Zepelin.s
+	@echo ... src/input.obj
+	@echo ... src/input.i
+	@echo ... src/input.s
 	@echo ... src/main.obj
 	@echo ... src/main.i
 	@echo ... src/main.s
