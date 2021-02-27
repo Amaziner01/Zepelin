@@ -4,6 +4,9 @@ project(ZepelinGraphics)
 
 file(GLOB_RECURSE SRCS "src/*.c")
 
+add_compile_options(-O2)
+
 add_executable(ZepelinGraphics ${SRCS})
 
-target_link_libraries(ZepelinGraphics libatomic.a)
+file(COPY ${CMAKE_SOURCE_DIR}/res/
+DESTINATION ${CMAKE_BINARY_DIR}/res/)

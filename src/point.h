@@ -4,7 +4,8 @@
 #include "colour.h"
 
 typedef struct point_t {
-	int x, y, z;
+	int x, y;
+	float z;
 	float u, v;
 	colour_t c;
 } point_t;

@@ -9,9 +9,14 @@
 static statemachine_t __global_state_machine;
 #define FB __global_state_machine._bound_framebuffer
 #define SF __global_state_machine._bound_surface
+#define DB __global_state_machine._bound_depthbuffer
 
 void bind_framebuffer(colour_t *fb) {
     FB = fb;
+}
+
+void bind_depthbuffer(float *db) {
+    DB = db;
 }
 
 void bind_surface(surface_t *fb) {
@@ -24,7 +29,7 @@ void refresh(void) {
     }
 }
 
-embedded void clear_colour(colour_t c) {
+void clear_colour(colour_t c) {
     if (FB != NULL && SF != NULL) {
         for (int i = 0; i < SF->width * SF->height; ++i) {
             FB[i] = c;
@@ -32,15 +37,25 @@ embedded void clear_colour(colour_t c) {
     }
 }
 
-embedded void plot_pixel(int x, int y, colour_t c) {
-	if (FB != NULL && SF != NULL) {
-        if ( x > -1 && x < SF->width && y < SF->height && y > -1) {
-            FB[x + (y * SF->width)] = c;
+void clear_depth(void) {
+    if (DB != NULL && SF != NULL) {
+        for (int i = 0; i < SF->width * SF->height; ++i) {
+            DB[i] = INFINITY;
         }
     }
 }
 
-embedded void plot_line(int x1, int y1, colour_t c1, int x2, int y2, colour_t c2) {
+inline void plot_pixel(int x, int y, float z, colour_t c) {
+	if (FB != NULL && SF != NULL && DB != NULL) {
+        if ( x > -1 && x < SF->width && y < SF->height && y > -1) {
+            if (z > DB[x + (y * SF->width)]) return;
+            FB[x + (y * SF->width)] = c;
+            DB[x + (y * SF->width)] = z;
+        }
+    }
+}
+
+inline void plot_line(int x1, int y1, colour_t c1, int x2, int y2, colour_t c2) {
 	if (FB != NULL && SF != NULL) {
         int dx = x2 - x1;
         int dy = y2 - y1;
@@ -56,7 +71,7 @@ embedded void plot_line(int x1, int y1, colour_t c1, int x2, int y2, colour_t c2
             scarry = y1;
 
             for (i = 0; i <= abs(dx); ++i) {
-                plot_pixel(a, (int)scarry, colour(
+                plot_pixel(a, (int)scarry,  0.0, colour(
                             lerp(c1.r, c2.r, (float)i / abs(dx)),
                             lerp(c1.g, c2.g, (float)i / abs(dx)),
                             lerp(c1.b, c2.b, (float)i / abs(dx))
@@ -73,7 +88,7 @@ embedded void plot_line(int x1, int y1, colour_t c1, int x2, int y2, colour_t c2
             scarry = x1;
 
             for (i = 0; i <= abs(dy); ++i) {
-                plot_pixel((int)scarry, a, colour(
+                plot_pixel((int)scarry, a, 0.0, colour(
                             lerp(c1.r, c2.r, (float)i / abs(dy)),
                             lerp(c1.g, c2.g, (float)i / abs(dy)),
                             lerp(c1.b, c2.b, (float)i / abs(dy))
@@ -86,16 +101,20 @@ embedded void plot_line(int x1, int y1, colour_t c1, int x2, int y2, colour_t c2
     }
 }
 
-embedded void plot_triangle(int x1, int y1, colour_t c1, 
-			  int x2, int y2, colour_t c2,
-			  int x3, int y3, colour_t c3
+inline void plot_triangle(int x1, int y1, float z1, colour_t c1, 
+			              int x2, int y2, float z2, colour_t c2,
+			              int x3, int y3, float z3, colour_t c3
 			  ) {
 
-    if (FB != NULL && SF != NULL) {
+    if (FB != NULL && SF != NULL && DB != NULL) {
+
+        if (z1 < 0.5 || z2 < 0.5 || z3 < 0.5) return;
+        float zval = (z1 + z2 + z3) / 3.0;
+
         triangle_t tri = {
-            (point_t){x1, y1, 0, 0, 0, c1},
-            (point_t){x2, y2, 0, 0, 0, c2},
-            (point_t){x3, y3, 0, 0, 0, c3}
+            (point_t){x1, y1, z1, 0, 0, c1},
+            (point_t){x2, y2, z2, 0, 0, c2},
+            (point_t){x3, y3, z3, 0, 0, c3}
         };
 
         register size_t i;
@@ -154,7 +173,7 @@ embedded void plot_triangle(int x1, int y1, colour_t c1,
 
             for (j = 0; j < abs(dp); ++j) {
                 plot_pixel(
-                    p[0].x + j, p[0].y, colour(
+                    p[0].x + j, p[0].y, zval, colour(
                     lerp(p[0].c.r, p[1].c.r, (float)j / abs(dp)),
                     lerp(p[0].c.g, p[1].c.g, (float)j / abs(dp)),
                     lerp(p[0].c.b, p[1].c.b, (float)j / abs(dp))
@@ -204,7 +223,7 @@ embedded void plot_triangle(int x1, int y1, colour_t c1,
 
             for (j = 0; j < abs(dp); ++j) {
                 plot_pixel(
-                    p[0].x + j, p[0].y, colour(
+                    p[0].x + j, p[0].y, zval, colour(
                     lerp(p[0].c.r, p[1].c.r, (float)j / abs(dp)),
                     lerp(p[0].c.g, p[1].c.g, (float)j / abs(dp)),
                     lerp(p[0].c.b, p[1].c.b, (float)j / abs(dp))
@@ -220,13 +239,17 @@ embedded void plot_triangle(int x1, int y1, colour_t c1,
 }
 
 void plot_triangle_texture(
-    int x1, int y1, float u1, float v1,
-    int x2, int y2, float u2, float v2,
-    int x3, int y3, float u3, float v3,
+    int x1, int y1, float z1, float u1, float v1,
+    int x2, int y2, float z2, float u2, float v2,
+    int x3, int y3, float z3, float u3, float v3,
 	texture_t *t
     ) {
 
-    if (FB != NULL && SF != NULL) {
+    if (FB != NULL && SF != NULL && DB != NULL) {
+        
+        if (z1 < 2 || z2 < 2 || z3 < 2) return;
+        float zval = (z1 + z2 + z3) / 3.0;
+
         triangle_t tri = {
             (point_t){x1, y1, 0, u1, v1, 0},
             (point_t){x2, y2, 0, u2, v2, 0},
@@ -273,6 +296,7 @@ void plot_triangle_texture(
             p[1] = (point_t){
                 .x = sc2,
                 .y = i + tri.p1.y,
+                .z = lerp(tri.p1.z, tri.p3.z, (float)i/abs(dy2)),
                 .u = lerp(tri.p1.u, tri.p3.u, (float)i/abs(dy2)) * t->w,
                 .v = lerp(tri.p1.v, tri.p3.v, (float)i/abs(dy2)) * t->h
             };
@@ -290,7 +314,7 @@ void plot_triangle_texture(
                 v = (int)lerp(p[0].v, p[1].v, (float)j/abs(dp));
 
                 plot_pixel(
-                    p[0].x + j, p[0].y, pix[u + (v * t->h)]
+                    p[0].x + j, p[0].y, zval, pix[u  + (v * t->h)]
                 );
             }
             sc1 += s1;
@@ -333,7 +357,7 @@ void plot_triangle_texture(
                 v = (int)lerp(p[0].v, p[1].v, (float)j/abs(dp));
 
                 plot_pixel(
-                    p[0].x + j, p[0].y, pix[u + (v * t->w)]
+                    p[0].x + j, p[0].y, zval, pix[u + (v * t->w)]
                 );
             }
 

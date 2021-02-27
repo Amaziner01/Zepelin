@@ -1,5 +1,6 @@
 #include "vec4.h"
 
+
 inline vec4_t vec4_add(vec4_t v1, vec4_t v2) {
     return (vec4_t) {
         .v = _mm_add_ps(v1.v, v2.v)
