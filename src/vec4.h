@@ -4,12 +4,22 @@
 #include <immintrin.h>
 #include "mat4.h"
 
+#ifdef __SSE__
+
 typedef struct vec4_t {
     union {
         struct {float x, y, z, w;};
         __m128 v;
     };
 } vec4_t;
+
+#else
+
+typedef struct vec4_t {
+    float x, y, z, w;
+} vec4_t;
+
+#endif
 
 #define vec4(x, y, z, w) ((vec4_t){x, y, z, w})
 

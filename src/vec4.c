@@ -1,5 +1,6 @@
 #include "vec4.h"
 
+#ifdef __SSE__
 
 inline vec4_t vec4_add(vec4_t v1, vec4_t v2) {
     return (vec4_t) {
@@ -27,3 +28,45 @@ inline vec4_t vec4_mul_mat4(vec4_t v, mat4_t m) {
         (v.x*m.m[12]) + (v.y*m.m[13]) + (v.z*m.m[14]) + (v.w*m.m[15])
     };
 }
+
+#else
+
+#warning "Your processor doesn't support SSE Intrinsics"
+
+inline vec4_t vec4_add(vec4_t v1, vec4_t v2) {
+    return (vec4_t) {
+        v1.x + v2.x,
+        v1.y + v2.y,
+        v1.z + v2.z,
+        v1.w + v2.w,
+    };
+}
+
+inline vec4_t vec4_sub(vec4_t v1, vec4_t v2) {
+    return (vec4_t) {
+        v1.x - v2.x,
+        v1.y - v2.y,
+        v1.z - v2.z,
+        v1.w - v2.w,
+    };
+}
+
+inline vec4_t vec4_mul(vec4_t v1, vec4_t v2) {
+    return (vec4_t) {
+        v1.x * v2.x,
+        v1.y * v2.y,
+        v1.z * v2.z,
+        v1.w * v2.w,
+    };
+}
+
+inline vec4_t vec4_mul_mat4(vec4_t v, mat4_t m) {
+    return (vec4_t) {
+        (v.x*m.m[0]) + (v.y*m.m[1]) + (v.z*m.m[2]) + (v.w*m.m[3]),
+        (v.x*m.m[4]) + (v.y*m.m[5]) + (v.z*m.m[6]) + (v.w*m.m[7]),
+        (v.x*m.m[8]) + (v.y*m.m[9]) + (v.z*m.m[10]) + (v.w*m.m[11]),
+        (v.x*m.m[12]) + (v.y*m.m[13]) + (v.z*m.m[14]) + (v.w*m.m[15])
+    };
+}
+
+#endif

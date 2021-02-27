@@ -251,9 +251,9 @@ void plot_triangle_texture(
         float zval = (z1 + z2 + z3) / 3.0;
 
         triangle_t tri = {
-            (point_t){x1, y1, 0, u1, v1, 0},
-            (point_t){x2, y2, 0, u2, v2, 0},
-            (point_t){x3, y3, 0, u3, v3, 0}
+            (point_t){x1, y1, z1, u1, v1, 0},
+            (point_t){x2, y2, z2, u2, v2, 0},
+            (point_t){x3, y3, z3, u3, v3, 0}
         };
 
         register size_t i;
@@ -279,7 +279,7 @@ void plot_triangle_texture(
         float sc1 = tri.p1.x;
         float sc2 = tri.p1.x;
 
-        int u, v;
+        int u, v, z;
 
         point_t p[2] = { tri.p1, tri.p2 };
 
@@ -289,6 +289,7 @@ void plot_triangle_texture(
             p[0] = (point_t){
                 .x = sc1,
                 .y = i + tri.p1.y,
+                .z = lerp(tri.p1.z, tri.p2.z, (float)i/abs(dy1)),
                 .u = lerp(tri.p1.u, tri.p2.u, (float)i/abs(dy1)) * t->w,
                 .v = lerp(tri.p1.v, tri.p2.v, (float)i/abs(dy1)) * t->h
             };
@@ -312,9 +313,10 @@ void plot_triangle_texture(
             for (j = 0; j < abs(dp); ++j) {
                 u = (int)lerp(p[0].u, p[1].u, (float)j/abs(dp));
                 v = (int)lerp(p[0].v, p[1].v, (float)j/abs(dp));
+                z = lerp(p[0].z, p[1].z, (float)j/abs(dp));
 
                 plot_pixel(
-                    p[0].x + j, p[0].y, zval, pix[u  + (v * t->h)]
+                    p[0].x + j, p[0].y, z, pix[u + (v * t->h)]
                 );
             }
             sc1 += s1;
@@ -333,6 +335,7 @@ void plot_triangle_texture(
             p[0] = (point_t){
                 .x = sc1,
                 .y = i + tri.p1.y,
+                .z = lerp(tri.p2.z, tri.p3.z, (float)d/abs(dy3)),
                 .u = lerp(tri.p2.u, tri.p3.u, (float)d/abs(dy3)) * t->w,
                 .v = lerp(tri.p2.v, tri.p3.v, (float)d/abs(dy3)) * t->h
             };
@@ -340,6 +343,7 @@ void plot_triangle_texture(
             p[1] = (point_t){
                 .x = sc2,
                 .y = i + tri.p1.y,
+                .z = lerp(tri.p1.z, tri.p3.z, (float)i/abs(dy2)),
                 .u = lerp(tri.p1.u, tri.p3.u, (float)i/abs(dy2)) * t->w,
                 .v = lerp(tri.p1.v, tri.p3.v, (float)i/abs(dy2)) * t->h
             };
@@ -355,9 +359,10 @@ void plot_triangle_texture(
             for (j = 0; j < abs(dp); ++j) {
                 u = (int)lerp(p[0].u, p[1].u, (float)j/abs(dp));
                 v = (int)lerp(p[0].v, p[1].v, (float)j/abs(dp));
+                z = lerp(p[0].z, p[1].z, (float)j/abs(dp));
 
                 plot_pixel(
-                    p[0].x + j, p[0].y, zval, pix[u + (v * t->w)]
+                    p[0].x + j, p[0].y, z, pix[u + (v * t->w)]
                 );
             }
 
