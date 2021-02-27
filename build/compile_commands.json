@@ -1,0 +1,42 @@
+[
+{
+  "directory": "E:/Projects/Zepelin/build",
+  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\gcc.exe   -O3 -DNDEBUG -O2 -o CMakeFiles\\ZepelinGraphics.dir\\src\\Zepelin.c.obj -c E:\\Projects\\Zepelin\\src\\Zepelin.c",
+  "file": "E:/Projects/Zepelin/src/Zepelin.c"
+},
+{
+  "directory": "E:/Projects/Zepelin/build",
+  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\gcc.exe   -O3 -DNDEBUG -O2 -o CMakeFiles\\ZepelinGraphics.dir\\src\\input.c.obj -c E:\\Projects\\Zepelin\\src\\input.c",
+  "file": "E:/Projects/Zepelin/src/input.c"
+},
+{
+  "directory": "E:/Projects/Zepelin/build",
+  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\gcc.exe   -O3 -DNDEBUG -O2 -o CMakeFiles\\ZepelinGraphics.dir\\src\\main.c.obj -c E:\\Projects\\Zepelin\\src\\main.c",
+  "file": "E:/Projects/Zepelin/src/main.c"
+},
+{
+  "directory": "E:/Projects/Zepelin/build",
+  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\gcc.exe   -O3 -DNDEBUG -O2 -o CMakeFiles\\ZepelinGraphics.dir\\src\\statemachine.c.obj -c E:\\Projects\\Zepelin\\src\\statemachine.c",
+  "file": "E:/Projects/Zepelin/src/statemachine.c"
+},
+{
+  "directory": "E:/Projects/Zepelin/build",
+  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\gcc.exe   -O3 -DNDEBUG -O2 -o CMakeFiles\\ZepelinGraphics.dir\\src\\surface.c.obj -c E:\\Projects\\Zepelin\\src\\surface.c",
+  "file": "E:/Projects/Zepelin/src/surface.c"
+},
+{
+  "directory": "E:/Projects/Zepelin/build",
+  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\gcc.exe   -O3 -DNDEBUG -O2 -o CMakeFiles\\ZepelinGraphics.dir\\src\\texture.c.obj -c E:\\Projects\\Zepelin\\src\\texture.c",
+  "file": "E:/Projects/Zepelin/src/texture.c"
+},
+{
+  "directory": "E:/Projects/Zepelin/build",
+  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\gcc.exe   -O3 -DNDEBUG -O2 -o CMakeFiles\\ZepelinGraphics.dir\\src\\vec4.c.obj -c E:\\Projects\\Zepelin\\src\\vec4.c",
+  "file": "E:/Projects/Zepelin/src/vec4.c"
+},
+{
+  "directory": "E:/Projects/Zepelin/build",
+  "command": "C:\\PROGRA~1\\MINGW-~1\\X86_64~1.0-P\\mingw64\\bin\\gcc.exe   -O3 -DNDEBUG -O2 -o CMakeFiles\\ZepelinGraphics.dir\\src\\window.c.obj -c E:\\Projects\\Zepelin\\src\\window.c",
+  "file": "E:/Projects/Zepelin/src/window.c"
+}
+]
